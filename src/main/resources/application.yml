@@ -1,0 +1,60 @@
+logging:
+  level:
+    kz.alfabank: ${LOG_LEVEL:trace}
+
+server:
+  compression:
+    enabled: true
+  servlet:
+    application-display-name: test
+  tomcat:
+    accept-count: 20
+    max-threads: 200
+
+appBaseName: ${server.servlet.application-display-name}
+
+spring:
+  security:
+    user:
+      password: root
+      name: root
+
+  rabbitmq:
+    ssl:
+      enabled: false
+    requested-heartbeat: 120s
+    cache:
+      channel:
+        size: 5
+    template:
+      retry:
+        enabled: true
+      receive-timeout: 12000ms
+      reply-timeout: 12000ms
+    connection-timeout: 60000ms
+    addresses: ${RABBIT_ADDRESSES:localhost}
+    port: ${RABBIT_PORT:5672}
+    username: ${RABBIT_USERNAME:root}
+    password: ${RABBIT_PASSWORD:root}
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+      use-new-id-generator-mappings: true
+    open-in-view: true
+    show-sql: ${SHOW_SQL:true}
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    name: ${server.servlet.application-display-name}-pool
+    hikari:
+      connection-timeout: 20000
+      login-timeout: 8000
+      minimum-idle: 5
+      maximum-pool-size: 10
+      schema: clinic
+    url: ${LOAN_DB_URL:jdbc:postgresql://localhost:5432/root}
+    jdbc-url: ${spring.datasource.url}
+    username: ${LOAN_DB_USERNAME:root}
+    password: ${LOAN_DB_PWD:root}
